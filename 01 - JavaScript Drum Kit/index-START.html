@@ -79,7 +79,7 @@
   }
 
   const keys = document.querySelectorAll('.key')
-  // lopp over elements to attach eventlistener. Not possible to add eventlistener to a whole array
+  // lopp over elements to attach eventlistener. Not possible to add eventlistener to nodelist/array
   keys.forEach(key => key.addEventListener('transitionend', removeTransition))
   
   window.addEventListener('keydown', playSound)
