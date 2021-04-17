@@ -7,6 +7,51 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+const canvas = document.querySelector('#draw');
+// Get the context (that which you draw on). Can be 2D or 3D:
+const ctx = canvas.getContext('2d');
+// Size the canvas to be the exact width of the window:
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+// Base settings:
+ctx.strokeStyle = '#BADA55';
+ctx.lineJoin = 'round';
+ctx.lineCap = 'round';
+ctx.lineWidth = 3;
+
+//Dummy variables:
+// Initially false. when clicked down, set to true (to draw):
+let isDrawing = false;
+// Variables to get a starting point & ending point X & Y (to know where we draw):
+let lastX = 0;
+let lastY = 0;
+let hue = 0;
+
+function draw(e) {
+  if (!isDrawing) return;  // stop the fn from running when not moused down.
+  console.log(e);
+  ctx.strokeStyle = `hsl(${hue}, 80%, 50%)`
+  ctx.beginPath(); 
+  // start from
+  ctx.moveTo(lastX, lastY); 
+  // go to
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  [lastX, lastY] = [e.offsetX, e.offsetY]
+  hue++;
+  if (hue >= 360) {
+    hue = 0;
+  }
+};
+
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY]
+});
+
+canvas.addEventListener('mousemove', draw)
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
 </script>
 
 <style>

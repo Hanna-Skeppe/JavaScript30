@@ -26,6 +26,7 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -43,6 +44,11 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      display: flex;
+      flex-direction: column;
+      flex: 1; /* Tell each panel to use the extra space and evenly didtribute it among them */
+      justify-content: center;
+      align-items: center;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -52,12 +58,35 @@
     .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
 
     /* Flex Children */
-    .panel > * {
+
+    /* what does this selector with > * mean? */
+    /* (>) = child combinator: https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator */
+    /* The child combinator (>) is placed between two CSS selectors. 
+    It matches only those elements matched by the second selector that are 
+    the direct children of elements matched by the first. */
+    /* (*) = asterisk selector: https://www.geeksforgeeks.org/what-is-the-use-of-asterisk-selector-in-css/*/
+    /*The asterisk (*) is known as the CSS universal selectors. 
+    It can be used to select any and all types of elements in an HTML page. 
+    The asterisk can also be followed by a selector while using to select a child object. 
+    This selector is useful when we want to select all the elements on the page. */
+    .panel > * { 
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      /* border: 1px solid red; for visualization purpose only */
+      flex: 1 0 auto; /* The same as: flex-grow: 1; flex-shrink: 0; flex-basis: auto; see: https://devhints.io/css-flexbox */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
+    /*Each of the first/last children (the upper/lower texts) are put off screen (upwards/downwards) */
+    .panel > *:first-child { transform: translateY(-100%) }
+    .panel.open-active > *:first-child { transform: translateY(0) }
+    .panel > *:last-child { transform: translateY(100%) }
+    .panel.open-active > *:last-child { transform: translateY(0) }
+    /* When panels have the class of open-active they translate in to the screen*/
+    
     .panel p {
       text-transform: uppercase;
       font-family: 'Amatic SC', cursive;
@@ -69,7 +98,10 @@
       font-size: 4em;
     }
 
+    /*flex 5: when panels are open the panel takes up proportionally more space than the other panels (5 times more)*/ 
+    /* when open the panel transitions font-size, background & flex */
     .panel.open {
+      flex: 5;
       font-size: 40px;
     }
 
@@ -105,10 +137,24 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel')
+
+    function toggleOpen() {
+      console.log('Hello');
+      this.classList.toggle('open')
+    }
+
+    function toggleActive(event) {
+      console.log(event.propertyName)
+      if(event.propertyName.includes('flex')) {
+        this.classList.toggle('open-active')
+      }
+     
+    }
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen))
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive))
+   
 
   </script>
-
-
-
 </body>
 </html>

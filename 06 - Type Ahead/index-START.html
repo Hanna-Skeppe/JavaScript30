@@ -16,6 +16,56 @@
   </form>
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+const cities = []
+
+fetch(endpoint)
+  .then(response => response.json())
+  .then(data => cities.push(...data))
+
+function findMatches(searchTerm, cities) {
+  return cities.filter(place => {
+    const regex = new RegExp(searchTerm, 'gi')
+    return place.city.match(regex) || place.state.match(regex)
+  })
+}
+
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+}
+
+function displayMatches() {
+  const matchesArray = findMatches(this.value, cities) // how does this functin know that this.value is the value in the input field?
+  //console.log(this) // how come 'this' is the input here? How is that? Is it because the eventlistener is on the searchInput?
+  const html = matchesArray.map(place => {
+    //to highlight the searched word:
+    // create a regex that will match the searched word:
+    const regex = new RegExp(this.value, 'gi')
+    // use the regex to replace the matched word with a span of class highlight:
+    const cityName = place.city.replace(regex, `<span class="highlight">${this.value}</span>`)
+    const stateName = place.state.replace(regex, `<span class="highlight">${this.value}</span>`)
+    return `
+      <li>
+        <span class="name">${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(place.population)}</span>
+      </li>
+    `
+  }).join('')
+  suggestions.innerHTML = html
+}
+
+//Could I write the displayMatches-function using an arrow-function instead? 
+//And without using the 'this' keywork. If so How? This below is not working:
+// const displayMatches = () => {
+//   console.log(searchInput.value)
+//   const matchesArray = findMatches(searchInput.value, cities)
+//   console.log(matchesArray) // undefined
+// }
+const searchInput = document.querySelector('.search') // selects the input
+const suggestions = document.querySelector('.suggestions')
+
+
+searchInput.addEventListener('keyup', displayMatches) // run displayMatches on keyup
+
 
 </script>
 </body>

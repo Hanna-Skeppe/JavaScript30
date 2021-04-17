@@ -39,7 +39,6 @@ input.search {
   margin: 0;
   padding: 0;
   position: relative;
-  /*perspective: 20px;*/
 }
 
 .suggestions li {
@@ -69,6 +68,6 @@ span.population {
   font-size: 15px;
 }
 
-.hl {
+.highlight {
   background: #ffc600;
 }
