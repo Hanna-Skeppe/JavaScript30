@@ -95,7 +95,30 @@
     </div>
   </div>
 
-<script>
-</script>
+  <script>
+  
+  let lastChecked;
+  // re-did this to an arrow function and removed the use of 'this':
+  const handleCheck = (event) => {
+    let inBetween = false;
+    if(event.shiftKey && event.target.checked) {
+      //loop checkboxes and create an inbetween variable to define those that are going to be checked:
+      checkboxes.forEach(checkbox => {
+        if(checkbox === event.target || checkbox === lastChecked) {
+          inBetween = !inBetween // flag variable
+        }
+        if (inBetween) {
+          checkbox.checked = true;
+        }
+      })
+    }
+    lastChecked = event.target;
+  }
+
+  const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
+
+  </script>
 </body>
 </html>

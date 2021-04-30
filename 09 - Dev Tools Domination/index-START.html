@@ -9,7 +9,7 @@
   <p onClick="makeGreen()">×BREAK×DOWN×</p>
 
   <script>
-    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'Hugo', age: 8 }];
 
     function makeGreen() {
       const p = document.querySelector('p');
@@ -22,24 +22,59 @@
     // Interpolated
 
     // Styled
-
+    console.log('%c I am text', 
+    'font-size:36px; background:red; color:white')
+    
     // warning!
-
+    console.warn('Oh, no! Warning!')
+    
     // Error :|
-
+    console.error('error')
+    
     // Info
-
+    console.info('This is some info!'); // looks loke an ordinary console.log. No info 'i' in my console.
+    
     // Testing
-
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('ouch'), 'That is wrong!')
+    console.assert(1 === 2, 'Assertion failed!')
+    
     // clearing
-
+    // console.clear() // clears console
+    
     // Viewing DOM Elements
-
+    console.log(p) // outputs the actual element: <p onClick="makeGreen()">×BREAK×DOWN×</p>
+    console.dir(p) // dropdown list of everything that lives on that element
+    
     // Grouping together
-
+    dogs.forEach(dog => {
+      console.group(`${dog.name}`)
+      console.log(`This is ${dog.name}`)
+      console.log(`${dog.name} is ${dog.age} human years old`)
+      console.log(`${dog.name} is ${dog.age * 7} dog years old`)
+      console.groupEnd(`${dog.name}`)
+    })
     // counting
-
+    console.count('Hanna')
+    console.count('Hedda')
+    console.count('Hanna')
+    console.count('Hanna')
+    console.count('Hanna')
+    console.count('Hedda')
+    console.count('Hanna')
+    console.count('Martin')
+    console.count('Hanna')
+    
     // timing
+    console.time('Fetching data')
+    fetch('https://api.github.com/users/Hanna-Skeppe')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('Fetching data') // Shows you how long it takes to fetch the data
+        console.log(data)
+      })
+
+      console.table(dogs)
 
   </script>
 </body>
