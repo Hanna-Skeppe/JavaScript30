@@ -43,7 +43,10 @@
   </div>
 
   <script>
-    function debounce(func, wait = 20, immediate = true) {
+    //debounce-function: The function aims to reduce overhead by preventing a function from being called several times in succession: to prevent checkSlide to trigger a lot of times when user scroll.
+    //See: https://www.educative.io/edpresso/how-to-use-the-debounce-function-in-javascript
+    // pass it a function, and it will run debounce all the time when we scroll. But it will only run the function checkSlide once every 20 ms, which won't slow down performance as much.
+    function debounce(func, wait = 20, immediate = true) { 
       var timeout;
       return function() {
         var context = this, args = arguments;
@@ -57,6 +60,32 @@
         if (callNow) func.apply(context, args);
       };
     }
+
+  const sliderImages = document.querySelectorAll('.slide-in');
+  
+  const checkSlide = (event) => { // runs on scroll
+    console.log(event);
+    //console.log(window.scrollY + window.innerHeight);
+    //loop over images and figure out where they are going to be shown:
+    sliderImages.forEach(sliderImage => {
+      //Half way through the image:
+      const slideInAt = (window.scrollY + window.innerHeight) - (sliderImage.height / 2);
+      console.log(slideInAt); // the pixel-level for where you currently are at the bottom of the window. Minus the image height / 2 ( the image will slide in at the middle of the image-height). This gives us the pixel-level of where the image should be sliding in at.
+      //The bottom of the image:
+      const imageBottom = sliderImage.offsetTop + sliderImage.height;
+      // When the image is halfway scrolled:
+      const isHalfShown = slideInAt > sliderImage.offsetTop;
+      const isNotScrolledPast = window.scrollY < imageBottom;
+      // remove/add active class accordingly:
+      if (isHalfShown && isNotScrolledPast) {
+        sliderImage.classList.add('active'); 
+      } else {
+        sliderImage.classList.remove('active');
+      }
+    })
+  }
+
+  window.addEventListener('scroll', debounce(checkSlide));
 
   </script>
 

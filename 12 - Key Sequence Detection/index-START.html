@@ -7,6 +7,20 @@
 </head>
 <body>
 <script>
+
+  const pressedKeys = [];
+  const secretCode = 'enter';
+  document.body.innerHTML = "Enter the secret combination of keys to see the secret appear!";
+
+  window.addEventListener('keyup', (event) => {
+    pressedKeys.push(event.key);
+    pressedKeys.splice(-secretCode.length - 1, pressedKeys.length - secretCode.length);
+    console.log(pressedKeys);
+    if (pressedKeys.join('').includes(secretCode)) {
+      cornify_add();
+    }
+  });
+
 </script>
 </body>
 </html>
