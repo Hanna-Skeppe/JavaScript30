@@ -30,11 +30,38 @@
 
   h1 {
     text-shadow: 10px 10px 0 rgba(0,0,0,1);
-    font-size: 100px;
+    font-size: 80px;
   }
   </style>
 
 <script>
+  const hero = document.querySelector('.hero');
+  const text = hero.querySelector('h1');
+  const shadowRange = 100;
+
+  const shadow = (e) => {
+    const width = hero.offsetWidth;
+    const height = hero.offsetHeight;
+
+    let x = e.offsetX;
+    let y = e.offsetY;
+    
+    if (e.target != hero) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+
+    const xShadowWalk = Math.round((x / width * shadowRange) - (shadowRange / 2));
+    const yShadowWalk = Math.round((y / height * shadowRange) - (shadowRange / 2));
+    
+    text.style.textShadow = `
+    ${xShadowWalk}px ${yShadowWalk}px 0 rgba(255,0,255,0.6),
+    ${xShadowWalk * 0.6}px ${yShadowWalk * (0.6)}px 0 rgba(0,255,255,0.6),
+    ${xShadowWalk * 0.3}px ${yShadowWalk * 0.3}px 0 rgba(255,255,0,0.6)
+    `;
+  }
+
+  hero.addEventListener('mousemove', shadow);
 </script>
 </body>
 </html>
